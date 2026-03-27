@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anam 🌹</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #c8507a;
+    --blush: #f5d0de;
+    --cream: #fdf6f0;
+    --gold: #d4a853;
+    --deep: #2a1a22;
+    --petal: #f0a0bb;
+    --soft: #e8c4d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--deep);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 18px; height: 18px;
+    background: var(--rose);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, background 0.3s;
+    mix-blend-mode: multiply;
+  }
+
+  /* Floating petals */
+  .petal-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .petal {
+    position: absolute;
+    top: -60px;
+    width: 18px; height: 22px;
+    background: radial-gradient(ellipse at 40% 40%, #f9c4d8, #e07898);
+    border-radius: 50% 0 50% 0;
+    opacity: 0.7;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.7; }
+    50%  { transform: translateY(50vh) rotate(180deg) translateX(40px); opacity: 0.5; }
+    100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; }
+  }
+
+  /* Hero Section */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 20px;
+    background: radial-gradient(ellipse 80% 60% at 50% 30%, #fce8f0 0%, var(--cream) 70%);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(200, 80, 122, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba(212, 168, 83, 0.07) 0%, transparent 50%);
+    z-index: -1;
+  }
+
+  .crown {
+    font-size: clamp(3rem, 8vw, 6rem);
+    animation: float 4s ease-in-out infinite;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 8px 20px rgba(200,80,122,0.3));
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50%       { transform: translateY(-18px) rotate(3deg); }
+  }
+
+  .subtitle-small {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    color: var(--rose);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 16px;
+    animation: fadeUp 1s ease both 0.3s;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 9vw, 7.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--deep);
+    animation: fadeUp 1s ease both 0.5s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--rose);
+    position: relative;
+  }
+
+  .hero-title em::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    animation: shimmer 2.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.4; transform: scaleX(0.7); }
+    50%       { opacity: 1; transform: scaleX(1); }
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 28px auto;
+    width: fit-content;
+    animation: fadeUp 1s ease both 0.7s;
+  }
+  .divider-line {
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .divider-line.right { background: linear-gradient(90deg, var(--gold), transparent); }
+  .divider-icon { color: var(--gold); font-size: 1.4rem; }
+
+  .hero-quote {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-style: italic;
+    font-weight: 300;
+    color: #6b3a50;
+    max-width: 520px;
+    line-height: 1.8;
+    animation: fadeUp 1s ease both 0.9s;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: fadeUp 1s ease both 1.4s;
+  }
+  .scroll-hint span { font-size: 0.75rem; letter-spacing: 0.2em; color: var(--rose); text-transform: uppercase; }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--rose), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 0.6; }
+    50%       { transform: scaleY(1.3); opacity: 1; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Message Section */
+  .message-section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--rose);
+    border: 1px solid var(--petal);
+    padding: 6px 20px;
+    border-radius: 100px;
+    margin-bottom: 36px;
+  }
+
+  .message-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    color: var(--deep);
+    margin-bottom: 36px;
+    line-height: 1.3;
+  }
+
+  .message-body {
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 2.2;
+    color: #4a2a38;
+    font-weight: 300;
+    position: relative;
+    padding: 48px 56px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 80px rgba(200,80,122,0.1), 0 2px 8px rgba(200,80,122,0.06);
+    border: 1px solid rgba(200,80,122,0.1);
+  }
+
+  .message-body::before, .message-body::after {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    color: var(--blush);
+    line-height: 0;
+    position: absolute;
+  }
+  .message-body::before { top: 64px; left: 28px; }
+  .message-body::after  { content: '"'; bottom: 30px; right: 28px; }
+
+  /* Cards Section */
+  .cards-section {
+    position: relative;
+    z-index: 1;
+    padding: 60px 20px 100px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .cards-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+    text-align: center;
+    color: var(--deep);
+    margin-bottom: 60px;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+  }
+
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 44px 32px;
+    text-align: center;
+    box-shadow: 0 8px 40px rgba(200,80,122,0.08);
+    border: 1px solid rgba(200,80,122,0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 24px 60px rgba(200,80,122,0.18);
+  }
+  .card:hover::before { transform: scaleX(1); }
+
+  .card-icon { font-size: 3rem; margin-bottom: 18px; display: block; }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--deep);
+    margin-bottom: 12px;
+  }
+  .card-text {
+    font-size: 1rem;
+    color: #6b3a50;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  /* Poem Section */
+  .poem-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #2a1a22 0%, #4a1a30 100%);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .poem-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(200,80,122,0.2) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(212,168,83,0.15) 0%, transparent 50%);
+  }
+
+  .poem-inner { position: relative; max-width: 680px; margin: 0 auto; }
+
+  .poem-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--gold);
+    margin-bottom: 48px;
+    font-style: italic;
+  }
+
+  .poem-lines { display: flex; flex-direction: column; gap: 6px; }
+
+  .poem-line {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--blush);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 2;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .poem-line.visible { opacity: 1; transform: translateY(0); }
+
+  .poem-line.gold { color: var(--gold); font-style: normal; font-weight: 400; }
+
+  /* Photo Frame Section */
+  .frame-section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 20px;
+    text-align: center;
+  }
+
+  .frame-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    color: var(--deep);
+    margin-bottom: 20px;
+  }
+  .frame-sub {
+    font-size: 1.05rem;
+    color: #8a5070;
+    margin-bottom: 52px;
+    font-style: italic;
+  }
+
+  .frame-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+
+  .photo-frame {
+    width: 220px; height: 260px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(42,26,34,0.25);
+    overflow: hidden;
+    transition: transform 0.4s ease;
+  }
+
+  .photo-frame:nth-child(1) { transform: rotate(-4deg); }
+  .photo-frame:nth-child(2) { transform: rotate(0deg) translateY(-16px); }
+  .photo-frame:nth-child(3) { transform: rotate(4deg); }
+
+  .photo-frame:hover { transform: rotate(0) translateY(-12px) scale(1.04) !important; z-index: 5; }
+
+  .photo-frame-inner {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--blush) 0%, var(--petal) 50%, #f9d0e4 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    border: 12px solid white;
+  }
+
+  .photo-placeholder-icon { font-size: 3.5rem; opacity: 0.5; }
+  .photo-placeholder-text {
+    font-size: 0.85rem;
+    color: var(--rose);
+    font-style: italic;
+    opacity: 0.7;
+  }
+
+  /* Footer */
+  .footer {
+    position: relative;
+    z-index: 1;
+    padding: 80px 20px 60px;
+    text-align: center;
+    background: var(--cream);
+  }
+
+  .heart-beat {
+    font-size: 4rem;
+    display: inline-block;
+    animation: heartbeat 1.4s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(200,80,122,0.5));
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15%       { transform: scale(1.25); }
+    30%       { transform: scale(1); }
+    45%       { transform: scale(1.15); }
+  }
+
+  .footer-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    color: var(--deep);
+    margin: 24px 0 10px;
+    font-style: italic;
+  }
+
+  .footer-sub {
+    font-size: 1rem;
+    color: var(--rose);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .gold-strip {
+    width: 120px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 32px auto;
+  }
+
+  /* Fireworks / sparkle decoration */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    font-size: 1.2rem;
+    animation: sparkleAnim 0.9s ease forwards;
+  }
+  @keyframes sparkleAnim {
+    0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+    60%  { opacity: 1; transform: translate(-50%, -80%) scale(1.2); }
+    100% { opacity: 0; transform: translate(-50%, -120%) scale(0.8); }
+  }
+
+  @media (max-width: 600px) {
+    .message-body { padding: 40px 28px; }
+    .message-body::before, .message-body::after { font-size: 5rem; }
+    .photo-frame:nth-child(1), .photo-frame:nth-child(3) { transform: rotate(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+
+<!-- Floating petals background -->
+<div class="petal-canvas" id="petalCanvas"></div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="crown">👑</div>
+  <p class="subtitle-small">Dünyada ən gözəl insan</p>
+  <h1 class="hero-title">Mənim <em>Anam</em></h1>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-icon">✦</span>
+    <div class="divider-line right"></div>
+  </div>
+
+  <p class="hero-quote">
+    Bütün dünya sənin ürəyinin isti nəfəsindən yaranmış kimidir, anam.
+  </p>
+
+  <div class="scroll-hint">
+    <span>Aşağı bax</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===== MESSAGE ===== -->
+<section class="message-section">
+  <span class="section-tag"> Həyatın əs gözəl </span>
+  <h2 class="message-title">🎶🎶🎶🎶🎶🎶…</h2>
+  <div class="message-body">
+    Anam, sən mənim həyatımın ən böyük hədiyyəsisən.
+    Sənə olan sevgimi heç bir söz tam ifadə edə bilməz — amma bilmək istəyirəm
+    ki, sən mənim <strong>hər şeyimsən</strong>. 💕
+  </div>
+</section>
+
+<!-- ===== CARDS ===== -->
+<section class="cards-section">
+  <h2 class="cards-title">Sən mənim üçün…</h2>
+  <div class="cards-grid">
+    <div class="card">
+      <span class="card-icon">🌸</span>
+      <h3 class="card-title">Baharımsan</h3>
+      <p class="card-text">Sənin gülüşün evimizə bahar çiçəklərinin ətrini gətirir. Sən olmasan, dünya rəngini itirər.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">⭐</span>
+      <h3 class="card-title">Ulduzumsan</h3>
+      <p class="card-text">Gecənin zülmətini yaran ulduz kimi, sən həmişə yolumu işıqlandırdın. Hər addımımda yanımdasan.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🦋</span>
+      <h3 class="card-title">İlhamımsan</h3>
+      <p class="card-text">Sənin mübarizən, sənin sevgin, sənin güclü qəlbin — bunlar mənə hər şeyi öyrətdi.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🕊️</span>
+      <h3 class="card-title">Sülhümsün</h3>
+      <p class="card-text">Sənin yanında olarkən bütün dünya xoş görünür. Sən mənim ən sakit limanımsan.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">💎</span>
+      <h3 class="card-title">Xəzinəmsən</h3>
+      <p class="card-text">Dünya ən qiymətli daşları bir araya gətirsə də, sən onlardan dəyərli olacaqsan.</p>
+    </div>
+	<div class="card">
+	  <span class="card-icon">🛡️</span>
+	  <h3 class="card-title">Güvənimsən</h3>
+	  <p class="card-text">Sənin yanında hər an rahat və sakit hiss edirəm, çünki sənin dəstəyin və etibarın mənim üçün hər şey deməkdir.</p>
+	 </div>
+  </div>
+</section>
+
+<!-- ===== POEM ===== -->
+<section class="poem-section">
+  <div class="poem-inner">
+    <h2 class="poem-title">🌹 Sənə bir şeir 🌹</h2>
+    <div class="poem-lines" id="poemLines">
+      <p class="poem-line">Ana, sənin sevgin bir nur kimi yanar,</p>
+      <p class="poem-line">Ürəyimdə hər an səssizcə oyanar,</p>
+      <p class="poem-line">Yorulsam, səsinlə ruhum yenə canlanar,</p>
+      <p class="poem-line">Sənsiz bu dünyada nə yol var, nə də iz.</p>
+      <p class="poem-line" style="margin-top:20px">Sənsən qaranlıqda yolumu aydınladan,</p>
+      <p class="poem-line">Sənsən ürəyimdə daima sevgi saxlayan,</p>
+      <p class="poem-line">Hər kədərli anımda ürəyim səni axtaran,</p>
+      <p class="poem-line gold">Sən mənim həyatda ən böyük möcüzəmsən.…</p>
+	  <p class="poem-line">--  Səid --- </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PHOTO FRAMES FULL (READY VERSION) ===== -->
+<section class="frame-section">
+  <h2 class="frame-title">Yaxşı ki varsan 📸</h2>
+  <p class="frame-sub">💕💕💕💕💕💕</p>
+
+  <div class="frame-container">
+
+    <!-- FRAME 1 -->
+    <div class="photo-frame">
+      <div class="photo-frame-inner">
+        <div class="photo-front">
+          <span class="photo-placeholder-icon">🌸</span>
+          <span class="photo-placeholder-text">Şəkil 1</span>
+        </div>
+        <div class="photo-back">
+          <img src="images/ana1.jpg" alt="Ana ilə şəkil 1">
+        </div>
+      </div>
+    </div>
+
+    <!-- FRAME 2 -->
+    <div class="photo-frame">
+      <div class="photo-frame-inner">
+        <div class="photo-front">
+          <span class="photo-placeholder-icon">💕</span>
+          <span class="photo-placeholder-text">Şəkil 2</span>
+        </div>
+        <div class="photo-back">
+          <img src="images/ana2.jpg" alt="Ana ilə şəkil 2">
+        </div>
+      </div>
+    </div>
+
+    <!-- FRAME 3 -->
+    <div class="photo-frame">
+      <div class="photo-frame-inner">
+        <div class="photo-front">
+          <span class="photo-placeholder-icon">🌺</span>
+          <span class="photo-placeholder-text">Şəkil 3</span>
+        </div>
+        <div class="photo-back">
+          <img src="images/ana3.jpg" alt="Ana ilə şəkil 3">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== STYLE (CSS) ===== -->
+<style>
+.frame-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.photo-frame {
+  width: 250px;
+  height: 300px;
+  perspective: 1000px;
+}
+
+.photo-frame-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.photo-frame:hover .photo-frame-inner {
+  transform: rotateY(180deg);
+}
+
+.photo-frame-inner.flip {
+  transform: rotateY(180deg);
+}
+
+.photo-front,
+.photo-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Ön tərəf */
+.photo-front {
+  background: #fff0f5;
+  font-size: 20px;
+}
+
+/* Arxa tərəf */
+.photo-back {
+  transform: rotateY(180deg);
+}
+
+.photo-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+</style>
+
+<!-- ===== SCRIPT (TELEFON ÜÇÜN) ===== -->
+<script>
+document.querySelectorAll('.photo-frame').forEach(frame => {
+  frame.addEventListener('click', () => {
+    frame.querySelector('.photo-frame-inner')
+         .classList.toggle('flip');
+  });
+});
+</script>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="gold-strip"></div>
+  <span class="heart-beat">❤️</span>
+  <p class="footer-text">Seni çox sevirəm, anam</p>
+  <p class="footer-sub">Həmişə və əbədi olaraq</p>
+  <div class="gold-strip"></div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+
+  // Sparkle on click
+  const sparkles = ['✨','💕','🌸','⭐','🌺','💖','🦋'];
+  document.addEventListener('click', e => {
+    const el = document.createElement('div');
+    el.className = 'sparkle';
+    el.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+    el.style.left = e.clientX + 'px';
+    el.style.top  = e.clientY + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 900);
+  });
+
+  // Floating petals
+  const canvas = document.getElementById('petalCanvas');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left     = Math.random() * 100 + 'vw';
+    p.style.animationDuration  = (8 + Math.random() * 10) + 's';
+    p.style.animationDelay     = (Math.random() * 12) + 's';
+    p.style.width  = (12 + Math.random() * 14) + 'px';
+    p.style.height = (14 + Math.random() * 16) + 'px';
+    p.style.opacity = 0.4 + Math.random() * 0.4;
+    const hue = 330 + Math.random() * 30;
+    p.style.background = `radial-gradient(ellipse at 40% 40%, hsl(${hue},90%,88%), hsl(${hue},70%,65%))`;
+    canvas.appendChild(p);
+  }
+
+  // Poem line reveal on scroll
+  const lines = document.querySelectorAll('.poem-line');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const els = entry.target.querySelectorAll('.poem-line');
+        els.forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), i * 200);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  const poemContainer = document.getElementById('poemLines');
+  if (poemContainer) observer.observe(poemContainer);
+</script>
+</body>
+</html>
